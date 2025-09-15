@@ -44,7 +44,7 @@ class MSSQLConnection:
                 return cursor.fetchall()
             else:
                 self.commit()
-                return True
+                return cursor.rowcount
         except pyodbc.Error as e:
             print(f"Lỗi query: {e}")
             return None
