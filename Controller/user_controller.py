@@ -81,14 +81,3 @@ class UserController:
             self.view.show_user_list(users)
             return users
         return None
-
-    # 9. Khóa/Mở khóa tài khoản
-    def set_user_status(self, uid, status):
-        result = self.model.set_user_status(uid, status)
-        if result and result > 0:
-            if status == 0:
-                self.view.show_message(f"Đã khóa user {uid}")
-            else:
-                self.view.show_message(f"Đã mở khóa user {uid}")
-        else:
-            self.view.show_message("Không tìm thấy user để cập nhật trạng thái!")

@@ -1,0 +1,17 @@
+CREATE TABLE CUSTOMERS (
+    CUSTOMERID INT IDENTITY(1,1) PRIMARY KEY,   -- Khóa chính tự tăng
+    USERNAME NVARCHAR(50) NOT NULL UNIQUE,      -- Tên đăng nhập (duy nhất)
+    FULLNAME NVARCHAR(100) NOT NULL,            -- Họ và tên
+    EMAIL NVARCHAR(100),                        -- Email
+    PHONE NVARCHAR(20),                         -- Số điện thoại
+    ADDRESS NVARCHAR(255),                      -- Địa chỉ
+    ID_CARD NVARCHAR(20),                       -- Số CMND/CCCD
+    CREATED_AT DATETIME DEFAULT GETDATE(),      -- Ngày tạo
+    STATUS INT DEFAULT 1                        -- 1 = hoạt động, 0 = khóa
+);
+
+INSERT INTO CUSTOMERS (USERNAME, FULLNAME, EMAIL, PHONE, ADDRESS, ID_CARD, STATUS) VALUES
+(N'hoanhoan', N'Hoànn Hoànn', N'hoanhoan@gmail.com', N'0909123456', N'123 Lê Lợi, Q.1, TP.HCM', N'079123456789', 1),
+(N'hongduyen', N'Hồng Duyên', N'duyenhong@gmail.com', N'0912345678', N'45 Hai Bà Trưng, Q.3, TP.HCM', N'082345678912', 1),
+(N'bichngoc', N'Bích Ngọc', N'ngocbich@gmail.com', N'0987654321', N'67 Nguyễn Huệ, Q.1, TP.HCM', N'093456789123', 0),
+(N'nguyenchien', N'Nguyễn Xuân Chiến', N'chiennguyen@gmail.com', N'0978123456', N'89 Pasteur, Q.1, TP.HCM', N'094567891234', 1);

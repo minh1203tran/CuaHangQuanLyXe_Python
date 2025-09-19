@@ -54,8 +54,3 @@ class UserModel:
             sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE FULLNAME LIKE ?"
             return self.conn.query(sql, (f"%{fullname}%",))
         return None
-
-    # 9. Khóa/Mở khóa tài khoản
-    def set_user_status(self, uid, status):
-        sql = "UPDATE USERS SET STATUS=? WHERE USERID=?"
-        return self.conn.query(sql, (status, uid))
