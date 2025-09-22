@@ -1,6 +1,29 @@
 from app.vehicle_app import VehicleApp
 from app.user_app import UserApp
 from app.customer_app import CustomerApp
+from app.order_app import OrderApp
+from controller.user_controller import UserController
+
+def dang_nhap_he_thong():
+    user_controller = UserController()
+    while True:
+        username = input("Tên đăng nhập: ").strip()
+        if username == "0":
+            print("Hủy đăng nhập, quay lại menu chính!")
+            return None
+
+        password = input("Mật khẩu: ").strip()
+        if password == "0":
+            print("Hủy đăng nhập, quay lại menu chính!")
+            return None
+
+        if not username or not password:
+            print("Tên đăng nhập và mật khẩu không được để trống!")
+            continue
+
+        user = user_controller.login(username, password)
+        if user:
+            return user[0]
 
 def menu_quan_ly_xe(app: VehicleApp):
     while True:
@@ -40,7 +63,7 @@ def menu_quan_ly_xe(app: VehicleApp):
         elif choice == "11":
             break
         else:
-            print("Lựa chọn không hợp lệ!")
+            print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
 
 def menu_quan_ly_user(app: UserApp):
     while True:
@@ -54,7 +77,7 @@ def menu_quan_ly_user(app: UserApp):
         print("7. Đổi mật khẩu")
         print("8. Tìm kiếm người dùng")
         print("9. Quay lại menu chính")
-        choice = input("Chọn: ")
+        choice = input("Chọn chức năng: ")
         if choice == "1":
             app.hien_thi_ds_user()
         elif choice == "2":
@@ -74,7 +97,7 @@ def menu_quan_ly_user(app: UserApp):
         elif choice == "9":
             break
         else:
-            print("Lựa chọn không hợp lệ!")
+            print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
 
 def menu_quan_ly_customer(app: CustomerApp):
     while True:
@@ -90,7 +113,7 @@ def menu_quan_ly_customer(app: CustomerApp):
         print("9. Khách hàng mới nhất")
         print("10. Quay lại menu chính")
 
-        choice = input("Chọn: ").strip()
+        choice = input("Chọn chức năng: ").strip()
         if choice == "1":
             app.hien_thi_ds_customer()
         elif choice == "2":
@@ -112,20 +135,58 @@ def menu_quan_ly_customer(app: CustomerApp):
         elif choice == "10":
             break
         else:
-            print("Lựa chọn không hợp lệ!")
+            print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
+
+def menu_quan_ly_order(app: OrderApp, current_user_id):
+    while True:
+        print("\n--- QUẢN LÝ ĐƠN HÀNG ---")
+        print("1. Xem danh sách đơn hàng")
+        print("2. Xem chi tiết đơn hàng")
+        print("3. Tạo đơn hàng mới")
+        print("4. Cập nhật trạng thái đơn hàng")
+        print("5. Tìm kiếm đơn hàng")
+        print("6. Thống kê đơn hàng")
+        print("7. In hóa đơn")
+        print("8. Lịch sử cập nhật")
+        print("9. Quay lại menu chính")
+        choice = input("Chọn chức năng: ").strip()
+        if choice == "1":
+            app.hien_thi_ds_order()
+        elif choice == "2":
+            app.xem_chi_tiet_order()
+        elif choice == "3":
+            app.tao_order_moi(current_user_id)
+        elif choice == "4":
+            app.cap_nhat_trang_thai(current_user_id)
+        elif choice == "5":
+            app.tim_kiem_order()
+        elif choice == "6":
+            app.thong_ke_order()
+        elif choice == "7":
+            app.in_hoa_don()
+        elif choice == "8":
+            app.lich_su_cap_nhat()
+        elif choice == "9":
+            break
+        else:
+            print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
+
 
 if __name__ == "__main__":
     vehicleApp = VehicleApp()
     userApp = UserApp()
     customerApp = CustomerApp()
-
+    orderApp = OrderApp()
+    current_user_id = None
+    # hien_thi_thong_tin_he_thong()
     while True:
-        print("\n=== MENU CHÍNH ===")
+        print("=== MENU CHÍNH ===")
         print("1. Quản lý danh mục xe")
         print("2. Quản lý danh mục user")
         print("3. Quản lý danh mục khách hàng")
+        print("4. Quản lý danh mục đơn hàng")
         print("0. Thoát")
-        choice = input("Chọn: ")
+        choice = input("Chọn chức năng: ").strip()
 
         if choice == "1":
             menu_quan_ly_xe(vehicleApp)
@@ -133,8 +194,21 @@ if __name__ == "__main__":
             menu_quan_ly_user(userApp)
         elif choice == "3":
             menu_quan_ly_customer(customerApp)
+        elif choice == "4":
+            if current_user_id:
+                menu_quan_ly_order(orderApp, current_user_id)
+            else:
+                print("Vui lòng đăng nhập trước khi sử dụng chức năng quản lý đơn hàng!")
+                current_user_id = dang_nhap_he_thong()
+                if current_user_id:
+                    menu_quan_ly_order(orderApp, current_user_id)
+                    if current_user_id:
+                        print("Đã đăng xuất!")
+                        current_user_id = None
+                    else:
+                        current_user_id = dang_nhap_he_thong()
         elif choice == "0":
-            print("Thoát ứng dụng!")
+            print("Cảm ơn bạn đã sử dụng hệ thống! Tạm biệt!")
             break
         else:
-            print("Lựa chọn không hợp lệ!")
+            print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")

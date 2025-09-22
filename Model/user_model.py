@@ -46,11 +46,23 @@ class UserModel:
         return self.conn.query(sql, (new_password, uid))
 
     # 8. Tìm kiếm User
-    def find_user(self, username=None, fullname=None):
-        if username:
-            sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE USERNAME LIKE ?"
-            return self.conn.query(sql, (f"%{username}%",))
-        elif fullname:
-            sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE FULLNAME LIKE ?"
-            return self.conn.query(sql, (f"%{fullname}%",))
-        return None
+    # def find_user(self, username=None, fullname=None):
+    #     if username:
+    #         sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE USERNAME LIKE ?"
+    #         return self.conn.query(sql, (f"%{username}%",))
+    #     elif fullname:
+    #         sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE FULLNAME LIKE ?"
+    #         return self.conn.query(sql, (f"%{fullname}%",))
+    #     return None
+
+    def find_user(self, keyword=None):
+        if not keyword:
+            return []
+        sql = """
+            SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT
+            FROM USERS
+            WHERE USERNAME LIKE ? OR FULLNAME LIKE ?
+        """
+        return self.conn.query(sql, (f"%{keyword}%", f"%{keyword}%"))
+
+

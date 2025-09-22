@@ -75,9 +75,9 @@ class UserController:
             self.view.show_message("Đổi mật khẩu thành công!")
 
     # 8. Tìm kiếm User
-    def find_user(self, username=None, fullname=None):
-        users = self.model.find_user(username, fullname)
+    def find_user(self, keyword=None):
+        users = self.model.find_user(keyword)
         if users and len(users) > 0:
-            self.view.show_user_list(users)
             return users
         return None
+

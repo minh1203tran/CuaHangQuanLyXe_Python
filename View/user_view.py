@@ -3,7 +3,7 @@ class UserView:
     def show_user_list(users):
         if not isinstance(users, list):
             users = [users]
-        print("\n--- DANH SÁCH USER ---")
+        print("--- DANH SÁCH USER ---")
         for u in users:
             print(f"ID: {u[0]} | Username: {u[1]} | Họ tên: {u[2]} | Vai trò: {u[3]} | Ngày tạo: {u[4]}")
 

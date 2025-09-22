@@ -12,12 +12,12 @@ class VehicleController:
         self.view.show_list(data)
 
     # 2. Thêm xe
-    def add_vehicle(self, license_plate, model, manufacturer, year):
+    def add_vehicle(self, license_plate, model, manufacturer, year, price):
         if self.check_license_plate_exists(license_plate):
             self.view.show_error("Biển số đã tồn tại trong hệ thống!")
             return False
 
-        result = self.model.add_vehicle(license_plate, model, manufacturer, year)
+        result = self.model.add_vehicle(license_plate, model, manufacturer, year, price)
         if result:
             self.view.show_message("Đã thêm xe thành công!")
             return True
@@ -25,13 +25,12 @@ class VehicleController:
             self.view.show_message("Thêm xe thất bại!")
             return False
 
-    # Kiểm tra biển số đã tồn tại chưa
     def check_license_plate_exists(self, license_plate: str) -> bool:
         return self.model.check_license_plate_exists(license_plate)
 
     # 3. Cập nhật thông tin xe
-    def update_vehicle(self, vehicle_id, license_plate, model, manufacturer, year):
-        result = self.model.update_vehicle(vehicle_id, license_plate, model, manufacturer, year)
+    def update_vehicle(self, vehicle_id, license_plate, model, manufacturer, year, price):
+        result = self.model.update_vehicle(vehicle_id, license_plate, model, manufacturer, year, price)
         if result:
             self.view.show_message("Cập nhật thành công!")
         else:
@@ -39,6 +38,9 @@ class VehicleController:
 
     # 4. Xóa xe
     def delete_vehicle(self, vehicle_id):
+        if self.model.has_orders(vehicle_id):
+            self.view.show_message("Xe đang có đơn hàng, không thể xóa!")
+            return
         result = self.model.delete_vehicle(vehicle_id)
         if result and result > 0:
             self.view.show_message("Đã xóa xe!")
@@ -49,7 +51,7 @@ class VehicleController:
     def get_vehicle_by_id(self, vehicle_id):
         data = self.model.get_vehicle_by_id(vehicle_id)
         if data:
-            self.view.show_list([data])
+            self.view.show_detail(data)
             return data
         else:
             self.view.show_message("Không tìm thấy xe!")
@@ -57,13 +59,17 @@ class VehicleController:
 
     # 6. Tìm kiếm theo hãng
     def search_by_manufacturer(self, manufacturer):
-        data = self.model.search_by_manufacturer(manufacturer)
-        self.view.show_list(data)
+        return self.model.search_by_manufacturer(manufacturer)
 
     # 7. Tìm kiếm theo năm sản xuất
     def search_by_year(self, year):
         data = self.model.search_by_year(year)
-        self.view.show_list(data)
+        if data and len(data) > 0:
+            self.view.show_list(data)
+            return data
+        else:
+            self.view.show_message(f"Không tìm thấy xe nào sản xuất năm {year}!")
+            return None
 
     # 8. Đếm số lượng xe
     def count_all(self):

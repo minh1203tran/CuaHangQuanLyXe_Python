@@ -181,14 +181,15 @@ class UserApp:
     def tim_kiem_user(self):
         while True:
             keyword = self.get_input("Nhập từ khóa tìm kiếm (username hoặc họ tên, nhập 0 để hủy): ")
-            if keyword is None:
-                return
-
-            users = self.controller.find_user(username=keyword)
-            if not users:
-                users = self.controller.find_user(fullname=keyword)
-
+            if keyword is None or keyword.strip() == "0":
+                break
+            users = self.controller.find_user(keyword)
             if users:
+                print("--- KẾT QUẢ TÌM KIẾM ---")
+                for u in users:
+                    print(f"ID: {u[0]} | Username: {u[1]} | Họ tên: {u[2]} | "
+                          f"Vai trò: {u[3]} | Ngày tạo: {u[4]}")
+                print()
                 break
             else:
-                print("Không tìm thấy user, vui lòng nhập lại hoặc nhập 0 để hủy.")
+                print("Không tìm thấy user nào. Vui lòng thử lại hoặc nhập 0 để thoát.")
