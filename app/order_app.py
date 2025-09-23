@@ -94,51 +94,6 @@ class OrderApp:
                     continue
             if chosen_customer:
                 break
-        # while True:
-        #     keyword = self.get_input("Nhập tên nhân viên hoặc username (0 để hủy): ")
-        #     if keyword is None or keyword.strip() == "0":
-        #         return
-        #     if not keyword.strip():
-        #         print("Bạn phải nhập từ khóa tìm kiếm! Vui lòng nhập lại.")
-        #         continue
-        #     users = self.user.find_user(keyword)
-        #     if not users:
-        #         print("Không tìm thấy nhân viên! Vui lòng nhập lại.")
-        #         continue
-        #     print("--- DANH SÁCH NHÂN VIÊN ---")
-        #     for u in users:
-        #         print(f"ID: {u[0]} | Username: {u[1]} | Họ tên: {u[2]}")
-        #     chosen_user = None
-        #     while True:
-        #         user_id = self.get_input("Chọn ID nhân viên từ danh sách (0 để hủy): ", cast_func=int)
-        #         if user_id == 0 or user_id is None:
-        #             return
-        #         if user_id in [u[0] for u in users]:
-        #             chosen_user = next(u for u in users if u[0] == user_id)
-        #             print("--- XÁC NHẬN NHÂN VIÊN ---")
-        #             print(f"ID: {chosen_user[0]} | Username: {chosen_user[1]} | Họ tên: {chosen_user[2]}")
-        #             while True:
-        #                 confirm = self.get_input("Nhân viên này đúng chưa? (y/n, 0 để hủy): ")
-        #                 if confirm is None or confirm.strip() == "0":
-        #                     return
-        #                 if confirm.lower() == "y":
-        #                     break
-        #                 elif confirm.lower() == "n":
-        #                     print("Quay lại tìm kiếm nhân viên.")
-        #                     chosen_user = None
-        #                     break
-        #                 else:
-        #                     print("Vui lòng nhập y/n hoặc 0 để hủy.")
-        #                     continue
-        #             if confirm.lower() == "y":
-        #                 break
-        #             elif confirm.lower() == "n":
-        #                 break
-        #         else:
-        #             print("ID nhân viên không nằm trong danh sách bạn tìm! Vui lòng nhập lại.")
-        #             continue
-        #     if chosen_user:
-        #         break
         user_id = current_user_id
         payment_options = {1: "Tiền mặt", 2: "Thẻ ngân hàng", 3: "Trả góp"}
         while True:

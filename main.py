@@ -2,6 +2,7 @@ from app.vehicle_app import VehicleApp
 from app.user_app import UserApp
 from app.customer_app import CustomerApp
 from app.order_app import OrderApp
+from app.stock_app import StockApp
 from controller.user_controller import UserController
 
 def dang_nhap_he_thong():
@@ -171,20 +172,59 @@ def menu_quan_ly_order(app: OrderApp, current_user_id):
         else:
             print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
 
+def menu_quan_ly_stock(app: StockApp):
+    while True:
+        print("\n--- QUẢN LÝ TỒN KHO ---")
+        print("1. Xem danh sách tồn kho")
+        print("2. Thêm tồn kho mới")
+        print("3. Cập nhật tồn kho")
+        print("4. Xóa tồn kho")
+        print("5. Tìm kiếm tồn kho theo xe")
+        print("6. Báo cáo tồn dưới mức tối thiểu")
+        print("7. Báo cáo xe âm")
+        print("8. Xuất kho nhanh")
+        print("9. Xuất báo cáo CSV")
+        print("10. Quay lại menu chính")
+        choice = input("Chọn: ")
+
+        if choice == "1":
+            app.hien_thi_ds_stock()
+        elif choice == "2":
+            app.them_stock_moi()
+        elif choice == "3":
+            app.cap_nhat_stock()
+        elif choice == "4":
+            app.xoa_stock()
+        elif choice == "5":
+            app.tim_kiem_stock()
+        elif choice == "6":
+            app.bao_cao_below_min()
+        elif choice == "7":
+            app.bao_cao_negative()
+        elif choice == "8":
+            app.xuat_kho_nhanh()
+        elif choice == "9":
+            app.xuat_csv()
+        elif choice == "10":
+            break
+        else:
+            print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
+
 
 if __name__ == "__main__":
     vehicleApp = VehicleApp()
     userApp = UserApp()
     customerApp = CustomerApp()
     orderApp = OrderApp()
+    stockApp = StockApp()
     current_user_id = None
-    # hien_thi_thong_tin_he_thong()
     while True:
         print("=== MENU CHÍNH ===")
         print("1. Quản lý danh mục xe")
         print("2. Quản lý danh mục user")
         print("3. Quản lý danh mục khách hàng")
         print("4. Quản lý danh mục đơn hàng")
+        print("5. Quản lý danh sách tồn kho")
         print("0. Thoát")
         choice = input("Chọn chức năng: ").strip()
 
@@ -207,6 +247,8 @@ if __name__ == "__main__":
                         current_user_id = None
                     else:
                         current_user_id = dang_nhap_he_thong()
+        elif choice == "5":
+            menu_quan_ly_stock(stockApp)
         elif choice == "0":
             print("Cảm ơn bạn đã sử dụng hệ thống! Tạm biệt!")
             break
