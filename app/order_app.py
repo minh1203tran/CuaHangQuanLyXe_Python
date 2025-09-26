@@ -50,7 +50,7 @@ class OrderApp:
     # 3. Tạo đơn hàng mới
     def tao_order_moi(self, current_user_id):
         while True:
-            keyword = self.get_input("Nhập tên/SĐT/Email khách hàng (0 để hủy): ")
+            keyword = self.get_input("Nhập Tên/SĐT/Email khách hàng (0 để hủy): ")
             if keyword is None or keyword.strip() == "0":
                 return
             if not keyword.strip():
@@ -188,7 +188,6 @@ class OrderApp:
                     break
         print("===== XÁC NHẬN ĐƠN HÀNG =====")
         print(f"Khách hàng: {chosen_customer[2]} ({chosen_customer[3]} | {chosen_customer[4]})")
-        # print(f"Nhân viên: {chosen_user[2]} (Username: {chosen_user[1]})")
         print(f"Nhân viên: {user_id}")
         print(f"Thanh toán: {payment_method}")
         print(f"Địa chỉ: {delivery_address}")
@@ -213,7 +212,7 @@ class OrderApp:
     def cap_nhat_trang_thai(self, current_user_id):
         print("=== CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG ===")
         while True:
-            keyword = input("Nhập tên KH hoặc số điện thoại (0 để thoát): ").strip()
+            keyword = input("Nhập tên khách hàng hoặc số điện thoại (0 để thoát): ").strip()
             if keyword == "0":
                 print("Hủy thao tác, quay lại menu chính!")
                 return
@@ -291,7 +290,7 @@ class OrderApp:
     # 6. Thống kê đơn hàng
     def thong_ke_order(self):
         while True:
-            print("\n--- THỐNG KÊ ĐƠN HÀNG ---")
+            print("--- THỐNG KÊ ĐƠN HÀNG ---")
             print("1. Theo trạng thái")
             print("2. Theo ngày")
             print("3. Theo tháng")
@@ -303,7 +302,7 @@ class OrderApp:
                 statuses = ["Chưa duyệt", "Đã xác nhận", "Đang giao hàng", "Đã giao hàng", "Đã hủy"]
                 for status in statuses:
                     orders = self.controller.get_orders_by_status(status)
-                    print(f"\nTrạng thái của đơn hàng: {status}")
+                    print(f"Trạng thái của đơn hàng: {status}")
                     if not orders:
                         print("Trạng thái này không có đơn hàng nào!")
                         continue
@@ -314,7 +313,7 @@ class OrderApp:
             elif choice in [2, 3]:
                 period = 'month' if choice == 3 else 'day'
                 stats = self.controller.get_sales_statistics(period)
-                print(f"\n--- THỐNG KÊ THEO {'THÁNG' if period == 'month' else 'NGÀY'} ---")
+                print(f"--- THỐNG KÊ THEO {'THÁNG' if period == 'month' else 'NGÀY'} ---")
                 for stat in stats:
                     if period == 'month':
                         print(f"{stat[0]}-{stat[1]:02d}: {stat[2]} đơn, Doanh thu: {stat[3]:,}")
@@ -341,11 +340,11 @@ class OrderApp:
                     if not orders:
                         print("Không có đơn hàng trong khoảng thời gian này!")
                         continue
-                    print("\nDanh sách đơn hàng:")
+                    print("Danh sách đơn hàng:")
                     for o in orders:
-                        print(f"ID: {o[0]}, Khách: {o[1]}, SĐT: {o[2]}, Tổng: {o[3]}, Trạng thái: {o[4]}, Ngày: {o[5]}")
+                        print(f"ID đơn hàng: {o[0]}, Tên khách: {o[1]}, SĐT: {o[2]}, Tổng: {o[3]}, Trạng thái: {o[4]}, Ngày: {o[5]}")
                     total_revenue = sum(order[3] for order in orders if order[3])
-                    print(f"Tổng số đơn: {len(orders)}, Tổng doanh thu: {total_revenue:,}\n")
+                    print(f"Tổng số đơn: {len(orders)}, Tổng doanh thu: {total_revenue:,}")
                     break
 
     # 7. In hóa đơn
@@ -353,7 +352,7 @@ class OrderApp:
         print("=== IN HÓA ĐƠN ĐƠN HÀNG ===")
         while True:
             keyword = self.get_input(
-                prompt="Nhập tên KH hoặc số điện thoại (0 để thoát): ",
+                prompt="Nhập tên khách hàng hoặc số điện thoại (0 để thoát): ",
                 allow_quit=True,
                 validator=lambda x: bool(x.strip())
             )

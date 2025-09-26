@@ -105,3 +105,22 @@ INSERT INTO STOCKS (VEHICLESID, QUANTITYAVAILABLE, MINSTOCKLEVEL) VALUES
 (1, 15, 3),
 (4, 8, 2),
 (5, 12, 4);
+
+CREATE TABLE PAYMENTS (
+    PAYMENTID INT IDENTITY(1,1) PRIMARY KEY,  -- Khóa chính, tự tăng
+    ORDERID INT NOT NULL,                     -- Khóa ngoại
+    AMOUNT DECIMAL(18,2) NOT NULL,             -- Số tiền thanh toán
+    PAYMENTDATE DATETIME NOT NULL DEFAULT GETDATE(),  -- Ngày thanh toán
+    PAYMENTMETHOD NVARCHAR(50) NOT NULL,      -- Phương thức thanh toán (Tiền mặt, Chuyển khoản, Quẹt thẻ)
+    TRANSACTIONID NVARCHAR(100) NULL,         -- Mã giao dịch (nếu có)
+    STATUS NVARCHAR(20) NOT NULL DEFAULT N'Thành công',   -- Trạng thái (Thành công, Thất bại)
+    CONSTRAINT FK_PAYMENTS_ORDERS FOREIGN KEY (ORDERID)
+        REFERENCES ORDERS(ORDERID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+INSERT INTO PAYMENTS (ORDERID, AMOUNT, PAYMENTDATE, PAYMENTMETHOD, TRANSACTIONID, STATUS) VALUES
+(6, 1500000, GETDATE(), N'Tiền mặt', NULL, N'Thất bại'),
+(7, 3500000, GETDATE(), N'Chuyển khoản', N'TXN123456', N'Thành công'),
+(8, 2000000, GETDATE(), N'Quẹt thẻ', N'VNP987654', N'Thành công');

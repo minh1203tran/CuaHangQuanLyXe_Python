@@ -57,25 +57,25 @@ class CustomerApp:
     def them_customer_moi(self):
         print("--- Thêm khách hàng mới (Nhấn 0 để hủy) ---")
         while True:
-            username = self.get_input("Username (không dấu, không cách): ")
+            username = self.get_input("Tên đăng nhập (không dấu, không cách): ")
             if username is None:
                 return
             if not username.strip():
-                print("Username không được để trống!")
+                print("Tên đăng nhập không được để trống!")
                 continue
             if not self.is_valid_username(username):
-                print("Username chỉ được chứa chữ cái không dấu, số.")
+                print("Tên đăng nhập chỉ được chứa chữ cái không dấu, số.")
                 continue
             if self.controller.check_username_exists(username):
-                print(f"Username '{username}' đã tồn tại! Vui lòng chọn username khác.")
+                print(f"Tên đăng nhập '{username}' đã tồn tại! Vui lòng chọn tên đăng nhập khác.")
                 continue
             break
         while True:
-            fullname = self.get_input("Họ tên: ")
+            fullname = self.get_input("Họ & tên: ")
             if fullname is None:
                 return
             if not fullname.strip():
-                print("Họ tên không được để trống!")
+                print("Họ & tên không được để trống!")
                 continue
             break
         while True:
@@ -122,14 +122,14 @@ class CustomerApp:
     def cap_nhat_customer(self):
         self.controller.list_customers()
         while True:
-            cid = self.get_input("\nNhập ID Customer cần cập nhật (0 để hủy): ", cast_func=int)
+            cid = self.get_input("Nhập ID khách hàng cần cập nhật (0 để hủy): ", cast_func=int)
             if cid is None or cid == 0:
                 return
             current = self.controller.view_customer(cid)
             if not current:
                 continue
             break
-        print("\n--- Nhập thông tin mới (Enter để giữ nguyên) ---")
+        print("--- Nhập thông tin mới (Enter để giữ nguyên) ---")
         fullname = self.get_input("Họ tên mới: ", default=current[2])
         if fullname is None:
             return
@@ -170,7 +170,7 @@ class CustomerApp:
                 continue
             break
         while True:
-            confirm = input("Bạn có chắc chắn muốn cập nhật customer này? (Y/N): ").strip().upper()
+            confirm = input("Bạn có chắc chắn muốn cập nhật khách hàng này? (Y/N): ").strip().upper()
             if confirm in ["Y", "N"]:
                 break
             print("Vui lòng nhập Y (đồng ý) hoặc N (hủy).")
@@ -183,13 +183,13 @@ class CustomerApp:
     def xoa_customer(self):
         self.controller.list_customers()
         while True:
-            cid = self.get_input("\nNhập ID Customer cần xóa (0 để hủy): ", cast_func=int)
+            cid = self.get_input("Nhập ID khách hàng cần xóa (0 để hủy): ", cast_func=int)
             if cid is None or cid == 0:
                 return
             cus = self.controller.view_customer(cid)
             if not cus:
                 continue
-            confirm = input(f"\nBạn có CHẮC CHẮN muốn xóa Customer này? (Y/N): ").strip().upper()
+            confirm = input(f"Bạn có CHẮC CHẮN muốn xóa khách hàng này? (Y/N): ").strip().upper()
             if confirm == "Y":
                 self.controller.delete_customer(cid)
             else:
@@ -200,7 +200,7 @@ class CustomerApp:
     def xem_chi_tiet_customer(self):
         self.controller.list_customers()
         while True:
-            cid = self.get_input("\nNhập ID khách hàng (0 để hủy): ", cast_func=int)
+            cid = self.get_input("Nhập ID khách hàng (0 để hủy): ", cast_func=int)
             if cid is None or cid == 0:
                 return
             cus = self.controller.view_customer(cid)
@@ -211,7 +211,7 @@ class CustomerApp:
     def khoa_mo_khoa_customer(self):
         self.controller.list_customers()
         while True:
-            cid = self.get_input("\nNhập ID Customer cần khóa/mở khóa (0 để hủy): ", cast_func=int)
+            cid = self.get_input("Nhập ID Customer cần khóa/mở khóa (0 để hủy): ", cast_func=int)
             if cid is None or cid == 0:
                 return
             cus = self.controller.view_customer(cid)
@@ -234,15 +234,15 @@ class CustomerApp:
 
     # 7. Tìm khách hàng theo tên/SĐT/Email
     def tim_customer(self):
-        keyword = self.get_input("Nhập tên/SĐT/Email cần tìm (0 để hủy): ")
+        keyword = self.get_input("Nhập Tên/SĐT/Email cần tìm (0 để hủy): ")
         if keyword is None or keyword == "0":
             return
         results = self.controller.search_customer(keyword)
         if results:
-            print("\n--- KẾT QUẢ TÌM KIẾM ---")
+            print("--- KẾT QUẢ TÌM KIẾM ---")
             for row in results:
-                print(f"ID: {row[0]} | Username: {row[1]} | Họ tên: {row[2]} | "
-                      f"Email: {row[3]} | Phone: {row[4]} | "
+                print(f"ID khách hàng: {row[0]} | Tên đăng nhập: {row[1]} | Họ & tên: {row[2]} | "
+                      f"Email: {row[3]} | Số điện thoại: {row[4]} | "
                       f"Trạng thái: {'Hoạt động' if row[8] == 1 else 'Khóa'}")
         else:
             print("Không tìm thấy khách hàng nào.")

@@ -3,6 +3,7 @@ from app.user_app import UserApp
 from app.customer_app import CustomerApp
 from app.order_app import OrderApp
 from app.stock_app import StockApp
+from app.payment_app import PaymentApp
 from controller.user_controller import UserController
 
 def dang_nhap_he_thong():
@@ -210,6 +211,41 @@ def menu_quan_ly_stock(app: StockApp):
         else:
             print("Lựa chọn không hợp lệ! Vui lòng chọn lại.")
 
+def menu_quan_ly_payment(app: PaymentApp):
+    while True:
+        print("\n===== QUẢN LÝ THANH TOÁN =====")
+        print("1. Danh sách thanh toán")
+        print("2. Thêm thanh toán")
+        print("3. Cập nhật thanh toán")
+        print("4. Xóa thanh toán")
+        print("5. Tìm kiếm thanh toán")
+        print("6. Xuất báo cáo CSV")
+        print("7. Lọc theo trạng thái")
+        print("8. Thống kê thanh toán")
+        print("9. Quay lại menu chính")
+        choice = input("Chọn chức năng: ").strip()
+
+        if choice == "1":
+            app.hien_thi_ds_payment()
+        elif choice == "2":
+            app.them_payment_moi()
+        elif choice == "3":
+            app.cap_nhat_payment()
+        elif choice == "4":
+            app.xoa_payment()
+        elif choice == "5":
+            app.tim_kiem_payment()
+        elif choice == "6":
+            app.xuat_csv()
+        elif choice == "7":
+            app.filter_by_status()
+        elif choice == "8":
+            app.stats()
+        elif choice == "9":
+            print("Thoát quản lý thanh toán.")
+            break
+        else:
+            print("Lựa chọn không hợp lệ!")
 
 if __name__ == "__main__":
     vehicleApp = VehicleApp()
@@ -217,14 +253,16 @@ if __name__ == "__main__":
     customerApp = CustomerApp()
     orderApp = OrderApp()
     stockApp = StockApp()
+    paymentApp = PaymentApp()
     current_user_id = None
     while True:
-        print("=== MENU CHÍNH ===")
+        print("\n=== MENU CHÍNH ===")
         print("1. Quản lý danh mục xe")
-        print("2. Quản lý danh mục user")
+        print("2. Quản lý danh mục người dùng")
         print("3. Quản lý danh mục khách hàng")
         print("4. Quản lý danh mục đơn hàng")
         print("5. Quản lý danh sách tồn kho")
+        print("6. Quản lý danh mục thanh toán")
         print("0. Thoát")
         choice = input("Chọn chức năng: ").strip()
 
@@ -249,6 +287,8 @@ if __name__ == "__main__":
                         current_user_id = dang_nhap_he_thong()
         elif choice == "5":
             menu_quan_ly_stock(stockApp)
+        elif choice == "6":
+            menu_quan_ly_payment(paymentApp)
         elif choice == "0":
             print("Cảm ơn bạn đã sử dụng hệ thống! Tạm biệt!")
             break

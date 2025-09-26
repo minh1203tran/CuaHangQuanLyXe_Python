@@ -51,10 +51,18 @@ class CustomerController:
     # 4. Xóa khách hàng
     def delete_customer(self, cid):
         result = self.model.delete_customer(cid)
-        if result > 0:
-            self.view.show_message("Đã xóa khách hàng thành công!")
-        else:
+        if result == "constraint":
+            self.view.show_message(f"Không thể xóa khách hàng ID = {cid} vì đang có đơn hàng liên kết.")
+            return False
+        elif result == "error":
+            self.view.show_message("Lỗi hệ thống khi xóa khách hàng.")
+            return False
+        elif result == 0:
             self.view.show_message("Không tìm thấy khách hàng để xóa!")
+            return False
+        else:
+            self.view.show_message("Đã xóa khách hàng thành công!")
+            return True
 
     # 5. Xem chi tiết khách hàng theo ID
     def view_customer(self, cid):

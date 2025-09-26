@@ -36,17 +36,25 @@ class UserController:
     def update_user(self, uid, fullname, role, password=None):
         result = self.model.update_user(uid, fullname, role, password)
         if result:
-            self.view.show_message("Cập nhật user thành công!")
+            self.view.show_message("Cập nhật người dùng thành công!")
         else:
-            self.view.show_error("Không thể cập nhật user.")
+            self.view.show_error("Không thể cập nhật người dùng.")
 
     # 4. Xóa User
-    def delete_user(self, uid):
-        result = self.model.delete_user(uid)
-        if result:
-            self.view.show_message("Xóa user thành công!")
-        else:
-            self.view.show_error("Không tìm thấy user để xóa!")
+    def delete_user(self, user_id):
+        result = self.model.delete_user(user_id)
+        if result == "constraint":
+            print(f"Không thể xóa người dùng ID = {user_id} vì đang có đơn hàng liên kết.")
+            return False
+        elif result == "error":
+            print("Lỗi hệ thống khi xóa người dùng.")
+            return False
+        elif result == 0:
+            print(f"Không tìm thấy người dùng ID = {user_id} để xóa.")
+            return False
+        elif result > 0:
+            print("Đã xóa User thành công.")
+            return True
 
     # 5. Xem chi tiết User theo ID
     def show_user(self, user_id):
@@ -55,7 +63,7 @@ class UserController:
             self.view.show_user_detail(user)
             return user
         else:
-            self.view.show_error("Không tìm thấy user.")
+            self.view.show_error("Không tìm thấy người dùng.")
             return None
 
     # 6. Đăng nhập
@@ -79,5 +87,6 @@ class UserController:
         users = self.model.find_user(keyword)
         if users and len(users) > 0:
             return users
-        return None
+        return []
+
 

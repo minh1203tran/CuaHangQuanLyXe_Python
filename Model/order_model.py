@@ -153,3 +153,14 @@ class OrderModel:
             ORDER BY OH.CHANGEDATE DESC
         """
         return self.conn.query(sql, (order_id,))
+
+    def get_order_total(self, order_id):
+        sql = """
+            SELECT SUM(QUANTITY * UNITPRICE) AS total
+            FROM ORDERDETAILS
+            WHERE ORDERID = ?
+        """
+        result = self.conn.query(sql, (order_id,))  # kết quả là list[Row]
+        if result and result[0][0] is not None:
+            return float(result[0][0])
+        return 0.0

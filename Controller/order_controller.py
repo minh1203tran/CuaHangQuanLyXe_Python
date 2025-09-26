@@ -70,3 +70,6 @@ class OrderController:
 
     def add_order_history(self, order_id, user_id, action, old_value, new_value):
         self.model.add_order_history(order_id, user_id, action, old_value, new_value)
+
+    def get_order_total(self, order_id):
+        return self.model.get_order_total(order_id)

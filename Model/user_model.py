@@ -15,18 +15,44 @@ class UserModel:
         return self.conn.query(sql, (username, password, fullname, role))
 
     #  3. Cập nhật User
-    def update_user(self, uid, fullname, role, password=None):
-        if password:
-            sql = "UPDATE USERS SET FULLNAME=?, ROLE=?, PASSWORD=? WHERE USERID=?"
-            return self.conn.query(sql, (fullname, role, password, uid))
-        else:
-            sql = "UPDATE USERS SET FULLNAME=?, ROLE=? WHERE USERID=?"
-            return self.conn.query(sql, (fullname, role, uid))
+    def update_user(self, uid, fullname=None, role=None, password=None):
+        fields = []
+        params = []
+
+        if fullname is not None:
+            fields.append("FULLNAME=?")
+            params.append(fullname)
+
+        if role is not None:  # chỉ update nếu có nhập role hợp lệ
+            fields.append("ROLE=?")
+            params.append(role)
+
+        if password:  # chỉ update nếu có password mới
+            fields.append("PASSWORD=?")
+            params.append(password)
+
+        if not fields:
+            return False  # không có gì để update
+
+        sql = f"UPDATE USERS SET {', '.join(fields)} WHERE USERID=?"
+        params.append(uid)
+        return self.conn.query(sql, tuple(params))
 
     # 4. Xóa User
-    def delete_user(self, uid):
-        sql = "DELETE FROM USERS WHERE USERID = ?"
-        return self.conn.query(sql, (uid,))
+    def delete_user(self, user_id):
+        try:
+            sql = "DELETE FROM USERS WHERE USERID = ?"
+            cursor = self.conn.cursor()
+            cursor.execute(sql, (user_id,))
+            self.conn.commit()
+            if cursor.rowcount == 0:
+                return 0
+            return cursor.rowcount
+        except Exception as e:
+            err = str(e)
+            if "REFERENCE constraint" in err:
+                return "constraint"
+            return "error"
 
     # 5. Xem chi tiết User theo ID
     def get_user_by_id(self, user_id):
@@ -46,15 +72,6 @@ class UserModel:
         return self.conn.query(sql, (new_password, uid))
 
     # 8. Tìm kiếm User
-    # def find_user(self, username=None, fullname=None):
-    #     if username:
-    #         sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE USERNAME LIKE ?"
-    #         return self.conn.query(sql, (f"%{username}%",))
-    #     elif fullname:
-    #         sql = "SELECT USERID, USERNAME, FULLNAME, ROLE, CREATED_AT FROM USERS WHERE FULLNAME LIKE ?"
-    #         return self.conn.query(sql, (f"%{fullname}%",))
-    #     return None
-
     def find_user(self, keyword=None):
         if not keyword:
             return []

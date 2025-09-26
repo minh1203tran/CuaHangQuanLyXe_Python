@@ -40,7 +40,7 @@ class VehicleApp:
     def them_xe_moi(self):
         print("--- Thêm thông tin mới (Nhấn 0 để hủy thao tác này) ---")
         while True:
-            raw_lp = self.get_input("Biển số (Enter để bỏ qua): ", cast_func=str, allow_quit=True)
+            raw_lp = self.get_input("Biển số 'VD:34F-67439' (Enter để bỏ qua): ", cast_func=str, allow_quit=True)
             if raw_lp is None:
                 return
             if raw_lp == "":
@@ -55,7 +55,7 @@ class VehicleApp:
                 continue
             break
         while True:
-            model = self.get_input("Dòng xe (*): ", cast_func=str)
+            model = self.get_input("Dòng xe: ", cast_func=str)
             if model is None:
                 return
             if not model.strip():
@@ -63,7 +63,7 @@ class VehicleApp:
                 continue
             break
         while True:
-            manu = self.get_input("Hãng (*): ", cast_func=str)
+            manu = self.get_input("Hãng: ", cast_func=str)
             if manu is None:
                 return
             if not manu.strip():

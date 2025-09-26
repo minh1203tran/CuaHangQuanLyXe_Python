@@ -43,11 +43,17 @@ class CustomerModel:
 
     # 4. Xóa khách hàng
     def delete_customer(self, cid):
-        sql = "DELETE FROM CUSTOMERS WHERE CUSTOMERID=?"
-        cursor = self.conn.cursor()
-        cursor.execute(sql, (cid,))
-        self.conn.commit()
-        return cursor.rowcount
+        try:
+            sql = "DELETE FROM CUSTOMERS WHERE CUSTOMERID=?"
+            cursor = self.conn.cursor()
+            cursor.execute(sql, (cid,))
+            self.conn.commit()
+            return cursor.rowcount
+        except Exception as e:
+            err = str(e)
+            if "REFERENCE constraint" in err:
+                return "constraint"
+            return "error"
 
     # 5. Xem chi tiết khách hàng theo ID
     def get_customer_by_id(self, cid):
