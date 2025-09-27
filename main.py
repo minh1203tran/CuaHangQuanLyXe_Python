@@ -4,6 +4,7 @@ from app.customer_app import CustomerApp
 from app.order_app import OrderApp
 from app.stock_app import StockApp
 from app.payment_app import PaymentApp
+from app.appointment_app import AppointmentApp
 from controller.user_controller import UserController
 
 def dang_nhap_he_thong():
@@ -247,6 +248,45 @@ def menu_quan_ly_payment(app: PaymentApp):
         else:
             print("Lựa chọn không hợp lệ!")
 
+def menu_quan_ly_appointment(app: AppointmentApp):
+    while True:
+        print("\n===== QUẢN LÝ LỊCH HẸN =====")
+        print("1. Danh sách lịch hẹn")
+        print("2. Thêm lịch hẹn mới")
+        print("3. Cập nhật lịch hẹn")
+        print("4. Xóa lịch hẹn")
+        print("5. Tìm kiếm lịch hẹn")
+        print("6. Xuất báo cáo CSV")
+        print("7. Lọc theo trạng thái")
+        print("8. Lọc theo ngày")
+        print("9. Thống kê lịch hẹn")
+        print("10. Quay lại menu chính")
+        choice = input("Chọn chức năng: ").strip()
+
+        if choice == "1":
+            app.hien_thi_ds_appointment()
+        elif choice == "2":
+            app.them_appointment_moi()
+        elif choice == "3":
+            app.cap_nhat_appointment()
+        elif choice == "4":
+            app.xoa_appointment()
+        elif choice == "5":
+            app.tim_kiem_appointment()
+        elif choice == "6":
+            app.xuat_csv()
+        elif choice == "7":
+            app.filter_by_status()
+        elif choice == "8":
+            app.filter_by_date()
+        elif choice == "9":
+            app.stats()
+        elif choice == "10":
+            print("Thoát quản lý lịch hẹn.")
+            break
+        else:
+            print("Lựa chọn không hợp lệ!")
+
 if __name__ == "__main__":
     vehicleApp = VehicleApp()
     userApp = UserApp()
@@ -254,6 +294,7 @@ if __name__ == "__main__":
     orderApp = OrderApp()
     stockApp = StockApp()
     paymentApp = PaymentApp()
+    appointmentApp = AppointmentApp()
     current_user_id = None
     while True:
         print("\n=== MENU CHÍNH ===")
@@ -263,9 +304,9 @@ if __name__ == "__main__":
         print("4. Quản lý danh mục đơn hàng")
         print("5. Quản lý danh sách tồn kho")
         print("6. Quản lý danh mục thanh toán")
+        print("7. Quản lý danh mục lịch hẹn")
         print("0. Thoát")
         choice = input("Chọn chức năng: ").strip()
-
         if choice == "1":
             menu_quan_ly_xe(vehicleApp)
         elif choice == "2":
@@ -289,6 +330,8 @@ if __name__ == "__main__":
             menu_quan_ly_stock(stockApp)
         elif choice == "6":
             menu_quan_ly_payment(paymentApp)
+        elif choice == "7":
+            menu_quan_ly_appointment(appointmentApp)
         elif choice == "0":
             print("Cảm ơn bạn đã sử dụng hệ thống! Tạm biệt!")
             break
